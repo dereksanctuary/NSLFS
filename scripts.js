@@ -23,75 +23,123 @@
  *
  */
 
-const FRESH_PRINCE_URL =
-  "https://upload.wikimedia.org/wikipedia/en/3/33/Fresh_Prince_S1_DVD.jpg";
-const CURB_POSTER_URL =
-  "https://m.media-amazon.com/images/M/MV5BZDY1ZGM4OGItMWMyNS00MDAyLWE2Y2MtZTFhMTU0MGI5ZDFlXkEyXkFqcGdeQXVyMDc5ODIzMw@@._V1_FMjpg_UX1000_.jpg";
-const EAST_LOS_HIGH_POSTER_URL =
-  "https://static.wikia.nocookie.net/hulu/images/6/64/East_Los_High.jpg";
 
-// This is an array of strings (TV show titles)
-let titles = [
-  "Fresh Prince of Bel Air",
-  "Curb Your Enthusiasm",
-  "East Los High",
+// dataset: this is an array of hike objects
+let hikes = [
+  {
+    name: "Sturtevant Falls",
+    difficulty: "Moderate",
+    distance: "3.5 Miles",
+    location: "Angeles National Forest",
+    image: "images/sturvenant.JPG"
+  },
+  {
+    name: "Hondo Canyon: Backbone Trail",
+    difficulty: "Hard",
+    distance: "7 Miles",
+    location: "Topanga State Park",
+    image: "images/hondacanyontrail.JPG"
+  },
+  {
+    name: "Mount Islip",
+    difficulty: "Hard",
+    distance: "10 Miles",
+    location: "Angeles National Forest",
+    image: "images/mt islip.JPG"
+  },
+  {
+    name: "Catalina Trail & Gnatcher Loop",
+    difficulty: "Moderate",
+    distance: "2 Miles",
+    location: "Shoreline Park",
+    image: "images/pv loop.JPG"
+  },
+  {
+    name: "Sandstone Peak",
+    difficulty: "Moderate",
+    distance: "3 Miles",
+    location: "Santa Monica Mountains National Recreation Area",
+    image: "images/sandstone peak.JPG"
+  },
+  {
+    name: "Escondido Falls",
+    difficulty: "Moderate",
+    distance: "4 Miles",
+    location: "Escondido Canyon Park",
+    image: "images/escondido.JPG"
+  }
 ];
 // Your final submission should have much more data than this, and
 // you should use more than just an array of strings to store it all.
 
-// This function adds cards the page to display the data in the array
-function showCards() {
+
+// this function adds cards to the page to display the data in the array
+function showCards(hikeList) {
   const cardContainer = document.getElementById("card-container");
   cardContainer.innerHTML = "";
+
   const templateCard = document.querySelector(".card");
 
-  for (let i = 0; i < titles.length; i++) {
-    let title = titles[i];
+  for (let i = 0; i < hikeList.length; i++) {
+    let hike = hikeList[i];
 
-    // This part of the code doesn't scale very well! After you add your
-    // own data, you'll need to do something totally different here.
-    let imageURL = "";
-    if (i == 0) {
-      imageURL = FRESH_PRINCE_URL;
-    } else if (i == 1) {
-      imageURL = CURB_POSTER_URL;
-    } else if (i == 2) {
-      imageURL = EAST_LOS_HIGH_POSTER_URL;
-    }
-
-    const nextCard = templateCard.cloneNode(true); // Copy the template card
-    editCardContent(nextCard, title, imageURL); // Edit title and image
-    cardContainer.appendChild(nextCard); // Add new card to the container
+    const nextCard = templateCard.cloneNode(true); // copy the template card
+    editCardContent(nextCard, hike); // edit hike
+    cardContainer.appendChild(nextCard); // add new card to the container
   }
 }
 
-function editCardContent(card, newTitle, newImageURL) {
+// fills one cloned card with the correct hike data
+function editCardContent(card, hike) {
   card.style.display = "block";
 
   const cardHeader = card.querySelector("h2");
-  cardHeader.textContent = newTitle;
+  cardHeader.textContent = hike.name;
 
   const cardImage = card.querySelector("img");
-  cardImage.src = newImageURL;
-  cardImage.alt = newTitle + " Poster";
+  cardImage.src = hike.image;
+  cardImage.alt = hike.name;
 
-  // You can use console.log to help you debug!
-  // View the output by right clicking on your website,
-  // select "Inspect", then click on the "Console" tab
-  console.log("new card:", newTitle, "- html: ", card);
+  const bulletPoints = card.querySelectorAll("li");
+  bulletPoints[0].textContent = "Difficulty: " + hike.difficulty;
+  bulletPoints[1].textContent = "Distance: " + hike.distance;
+  bulletPoints[2].textContent = "Location: " + hike.location;
 }
 
-// This calls the addCards() function when the page is first loaded
-document.addEventListener("DOMContentLoaded", showCards);
+// this function updates the displayed hikes based on search and filter
+function updateHikes() {
+  const searchInput = document.getElementById("search-input");
+  const difficultyFilter = document.getElementById("difficulty-filter");
 
-function quoteAlert() {
-  console.log("Button Clicked!");
-  alert(
-    "I guess I can kiss heaven goodbye, because it got to be a sin to look this good!",
-  );
+  const searchText = searchInput.value.toLowerCase();
+  const selectedDifficulty = difficultyFilter.value;
+
+  let filteredHikes = [];
+
+  for (let i = 0; i < hikes.length; i++) {
+    let hike = hikes[i];
+
+    const matchesSearch = hike.name.toLowerCase().includes(searchText);
+    const matchesDifficulty =
+      selectedDifficulty === "all" ||
+      hike.difficulty.toLowerCase() === selectedDifficulty;
+
+    if (matchesSearch && matchesDifficulty) {
+      filteredHikes.push(hike);
+    }
+  }
+
+  showCards(filteredHikes);
 }
 
-function removeLastCard() {
-  titles.pop(); // Remove last item in titles array
-  showCards(); // Call showCards again to refresh
-}
+// this waits until the page is loaded, then sets everything up
+// and attaches search/filter event listeners
+document.addEventListener("DOMContentLoaded", function () {
+  showCards(hikes);
+
+  const searchInput = document.getElementById("search-input");
+  const difficultyFilter = document.getElementById("difficulty-filter");
+
+  searchInput.addEventListener("input", updateHikes);
+  difficultyFilter.addEventListener("change", updateHikes);
+});

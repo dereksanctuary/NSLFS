@@ -1,31 +1,62 @@
 <!doctype html>
 <html>
   <head>
-    <title>LA TV Shows | Home</title>
-    <meta name="description" content="A Catalog of Shows Set in Los Angeles" />
+    <title>Favorite Hikes | Home</title>
+    <meta
+      name="description"
+      content="A catalog of favorite hikes with photos, difficulty, distance, and location."
+    />
     <link rel="stylesheet" href="style.css" />
     <script type="text/javascript" src="scripts.js"></script>
   </head>
 
+
+
   <body>
     <header class="main-header">
-      <h1 class="title">LA TV Shows</h1>
+      <h1 class="title">FAVORITE HIKES</h1>
+      <p class="subtitle">A journey of trails with new friends.</p>
     </header>
-    <div id="card-container"></div>
-    <div class="card" style="display: none">
-      <div class="card-content">
-        <h2>TV Show Title</h2>
-        <img src="" alt="TV Show Poster" />
-        <ul>
-          <li>Bullet Point 1</li>
-          <li>Bullet Point 2</li>
-          <li>Bullet Point 3</li>
-        </ul>
+
+    <section class="controls">
+      <div class="search-group">
+        <label for="search-input">Search Hikes</label>
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search By Trail"
+        />
       </div>
-    </div>
-    <div class="footer">
-      <button onclick="quoteAlert()">Get A Quote!</button>
-      <button onclick="removeLastCard()">Remove A Card!</button>
-    </div>
+
+      <div class="filter-group">
+        <label for="difficulty-filter">Filter by difficulty</label>
+        <select id="difficulty-filter">
+          <option value="all">All</option>
+          <option value="easy">Easy</option>
+          <option value="moderate">Moderate</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+    </section>
+
+    <main>
+      <div id="card-container"></div>
+
+      <div class="card" style="display: none">
+        <div class="card-content">
+          <h2>Hike Name</h2>
+          <img src="" alt="Hike photo" />
+          <ul>
+            <li>Difficulty: Moderate</li>
+            <li>Distance: 4.2 miles</li>
+            <li>Location: Los Angeles</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>Favorite Hikes Catalog</p>
+    </footer>
   </body>
 </html>
