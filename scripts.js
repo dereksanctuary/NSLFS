@@ -119,13 +119,14 @@ function updateHikes() {
   for (let i = 0; i < hikes.length; i++) {
     let hike = hikes[i];
 
+    // check if each hike matches the selected difficulty or allow all if all is selected
     const matchesSearch = hike.name.toLowerCase().includes(searchText);
     const matchesDifficulty =
       selectedDifficulty === "all" ||
       hike.difficulty.toLowerCase() === selectedDifficulty;
 
-    if (matchesSearch && matchesDifficulty) {
-      filteredHikes.push(hike);
+    if (matchesSearch && matchesDifficulty) {   //a condition
+      filteredHikes.push(hike);  
     }
   }
 
